@@ -13,3 +13,6 @@ SQLAlchemy[asyncio]>=2.0,<3.0
 
 # SQLite 的异步驱动：让 SQLAlchemy 能以异步方式读写本地数据库文件
 aiosqlite>=0.20,<1.0
+
+# HTTP 客户端：后端调用大模型服务用（AI 功能）
+httpx>=0.28,<1.0

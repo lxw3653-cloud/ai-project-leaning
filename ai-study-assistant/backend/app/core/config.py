@@ -29,8 +29,16 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5173",
     ]
 
-    # SQLite + 异步驱动。此处只是规划，尚未创建任何数据表
+    # SQLite + 异步驱动；数据文件默认放在 backend/data/app.db
     database_url: str = f"sqlite+aiosqlite:///{(DATA_DIR / 'app.db').as_posix()}"
+
+    # ---------------- AI（大模型）配置 ----------------
+    # 走 OpenAI 兼容接口，换服务商只需要改这三个值，代码不用动。
+    # API Key 只从后端的 .env / 环境变量读取，绝不能出现在前端代码里。
+    ai_api_key: str = ""
+    ai_base_url: str = "https://api.openai.com/v1"
+    ai_model: str = "gpt-4o-mini"
+    ai_timeout: float = 60.0
 
 
 @lru_cache
