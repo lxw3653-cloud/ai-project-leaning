@@ -53,3 +53,22 @@ class StudyPlanRead(BaseModel):
     end_date: date | None
     created_at: datetime
     updated_at: datetime
+
+
+class StudyPlanUpdate(BaseModel):
+    """更新学习计划时的请求体。
+
+    所有字段都是可选的：PATCH 是局部更新，只传想改的字段即可。
+    显式传 null 表示把这个字段清空（例如把 end_date 清掉）。
+    """
+
+    title: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=200,
+        description="计划标题",
+    )
+    description: str | None = Field(default=None, description="计划描述")
+    status: StudyPlanStatus | None = Field(default=None, description="计划状态")
+    start_date: date | None = Field(default=None, description="开始日期")
+    end_date: date | None = Field(default=None, description="结束日期")
