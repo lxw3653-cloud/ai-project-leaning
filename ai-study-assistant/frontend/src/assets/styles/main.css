@@ -1,0 +1,89 @@
+:root {
+  --color-text: #1f2328;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-primary: #2563eb;
+  --color-bg: #f7f8fa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  line-height: 1.6;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  padding: 24px 32px;
+  background-color: #fff;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.app-subtitle {
+  margin: 4px 0 0;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.app-main {
+  flex: 1;
+  padding: 32px;
+}
+
+.app-footer {
+  padding: 16px 32px;
+  color: var(--color-muted);
+  font-size: 13px;
+  border-top: 1px solid var(--color-border);
+}
+
+.card {
+  max-width: 720px;
+  padding: 24px;
+  background-color: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+}
+
+.health-check {
+  margin-top: 16px;
+}
+
+.health-check button {
+  padding: 8px 16px;
+  color: #fff;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.health-check button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.health-check .ok {
+  color: #15803d;
+}
+
+.health-check .err {
+  color: #b91c1c;
+}

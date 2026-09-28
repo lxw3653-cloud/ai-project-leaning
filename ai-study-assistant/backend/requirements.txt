@@ -1,0 +1,12 @@
+# Web 框架：提供路由、参数校验和自动生成的接口文档
+fastapi>=0.115,<1.0
+
+# ASGI 服务器：真正把 FastAPI 应用跑起来（standard 版本含热重载等常用组件）
+uvicorn[standard]>=0.34,<1.0
+
+# 配置管理：从 .env 文件读取环境变量
+pydantic-settings>=2.7,<3.0
+
+# 数据库相关（当前仅规划，尚未建表）
+SQLAlchemy>=2.0,<3.0
+aiosqlite>=0.20,<1.0
