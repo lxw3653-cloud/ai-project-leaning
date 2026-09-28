@@ -37,7 +37,7 @@ ai-study-assistant/
         ├── core/             全局配置
         ├── api/              路由层
         ├── schemas/          请求/响应数据结构
-        ├── models/           ORM 模型（暂空）
+        ├── models/           ORM 模型（study_plan）
         └── db/               数据库连接与会话
 ```
 
@@ -116,12 +116,35 @@ npm run preview    # 本地预览打包结果
 
 ## 数据库说明
 
-SQLite 仅完成**规划**：`backend/app/db/session.py` 里已建好异步引擎和会话工厂，`DATABASE_URL` 指向 `backend/data/app.db`，但**没有任何数据表**，也没有建表逻辑。等确认了第一个业务功能（比如「学习计划」）之后，再设计对应的表结构。
+数据库使用 SQLite，文件路径为 `backend/data/app.db`（首次启动后端时自动创建，该文件不提交到 Git）。
+
+建表逻辑在 `backend/app/db/session.py` 的 `init_db()` 中，由 `backend/app/main.py` 在应用启动时自动调用。`create_all` 只会创建缺失的表，不会改动已存在的表结构——所以以后修改字段时，要么引入 Alembic 迁移，要么删掉 `app.db` 让它重建。
+
+目前只有一张业务表 `study_plans`（学习计划），定义在 `backend/app/models/study_plan.py`：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | 整数 | 主键，自增 |
+| `title` | 文本（200） | 计划标题，必填 |
+| `description` | 长文本 | 计划描述，可为空 |
+| `status` | 文本 | 状态，只能是 `not_started` / `in_progress` / `completed` |
+| `start_date` | 日期 | 开始日期，可为空 |
+| `end_date` | 日期 | 结束日期，可为空，且不能早于开始日期 |
+| `created_at` | 日期时间 | 创建时间，程序自动写入（UTC） |
+| `updated_at` | 日期时间 | 更新时间，每次修改自动刷新（UTC） |
+
+> 注意：CRUD 接口尚未实现，现在只能通过数据库层面（或未来的接口）操作这张表。
+
+## 数据模型说明
+
+- 状态用 `StudyPlanStatus` 枚举表示，数据库层带 CHECK 约束，非法状态写不进去。
+- 表定义在 `backend/app/models/study_plan.py`，并且必须在 `backend/app/models/__init__.py` 中导入，否则建表时会漏掉这张表。
+- SQLite 不保存时区信息，时间以 UTC 写入，读出来是不带时区的值。
 
 ## 下一步计划（建议顺序）
 
-1. 前端接入 Vue Router，拆出「首页 / 学习计划 / 学习记录」等页面。
-2. 后端把 SQLite 真正用起来：定义第一个 ORM 模型并建表。
-3. 打通第一个真实业务接口（如学习计划的增删改查）。
-4. 引入 Pinia 管理前端状态。
+1. ~~定义学习计划数据模型并初始化数据库~~（已完成）
+2. 为学习计划编写 Pydantic 出入参结构（`app/schemas/study_plan.py`）。
+3. 实现学习计划的 CRUD 接口（`app/api/routes/study_plans.py`）。
+4. 前端接入 Vue Router 与 Pinia，做「首页 / 学习计划」页面。
 5. 接入大模型 API，做「答疑 / 总结 / 出题」等核心能力。

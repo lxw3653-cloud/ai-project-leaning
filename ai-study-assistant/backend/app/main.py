@@ -8,17 +8,17 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.router import api_router
 from app.core.config import get_settings
+from app.db.session import engine, init_db
 
 settings = get_settings()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    """应用启动与关闭时执行的逻辑。
-
-    目前不做任何事情。将来接入数据库时，可以在这里初始化连接或数据。
-    """
+    """应用启动时初始化数据库，关闭时释放数据库连接。"""
+    await init_db()
     yield
+    await engine.dispose()
 
 
 app = FastAPI(

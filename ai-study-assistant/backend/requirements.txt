@@ -7,6 +7,9 @@ uvicorn[standard]>=0.34,<1.0
 # 配置管理：从 .env 文件读取环境变量
 pydantic-settings>=2.7,<3.0
 
-# 数据库相关（当前仅规划，尚未建表）
-SQLAlchemy>=2.0,<3.0
+# 数据库 ORM。[asyncio] 这个额外标记会一并安装 greenlet，
+# 没有它的话，AsyncSession（异步会话）会在导入时直接报错
+SQLAlchemy[asyncio]>=2.0,<3.0
+
+# SQLite 的异步驱动：让 SQLAlchemy 能以异步方式读写本地数据库文件
 aiosqlite>=0.20,<1.0
